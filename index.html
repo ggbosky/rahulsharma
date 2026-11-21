@@ -11,14 +11,14 @@
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%2322c55e'/><path d='M9 16h4l2-5 3 10 2-5h3' fill='none' stroke='%23051a0d' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#07110c; --bg2:#0b1812; --card:#0f1f17; --card2:#132a1f;
   --line:#1f3a2c; --text:#e8f3ec; --muted:#9bb5a6; --dim:#6b8778;
   --accent:#22c55e; --accent2:#4ade80; --accent-ink:#04210f;
   --warn:#facc15; --info:#38bdf8;
-  --radius:16px; --mono:'JetBrains Mono',ui-monospace,monospace;
+  --radius:16px; --mono:Inter,system-ui,sans-serif;
   --shadow:0 20px 50px -20px rgba(0,0,0,.6);
 }
 :root[data-theme="light"]{
@@ -54,7 +54,7 @@ header.scrolled{background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop
 .brand{display:flex;align-items:center;gap:12px}
 .brand-mark{width:38px;height:38px;border-radius:10px;background:var(--accent);display:grid;place-items:center;color:var(--accent-ink);font-weight:800;font-family:var(--mono)}
 .brand b{display:block;font-size:1rem}
-.brand small{display:block;font-family:var(--mono);font-size:.7rem;color:var(--dim)}
+.brand small{display:block;font-size:.75rem;color:var(--dim)}
 .links{display:flex;gap:28px;font-size:.92rem;color:var(--muted)}
 .links a:hover,.links a.active{color:var(--accent2)}
 .nav-right{display:flex;align-items:center;gap:10px}
@@ -71,11 +71,11 @@ header.scrolled{background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop
   linear-gradient(var(--line) 1px,transparent 1px) 0 0/48px 48px,
   linear-gradient(90deg,var(--line) 1px,transparent 1px) 0 0/48px 48px;
   opacity:.45;mask-image:linear-gradient(to bottom,#000 30%,transparent);pointer-events:none}
-.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:56px;align-items:center;position:relative}
+.hero-grid{display:grid;grid-template-columns:1fr;max-width:760px;gap:56px;align-items:center;position:relative}
 .meta-line{font-family:var(--mono);font-size:.82rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
 .pulse{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 0 var(--accent);animation:pulse 2s infinite}
 @keyframes pulse{70%{box-shadow:0 0 0 10px transparent}100%{box-shadow:0 0 0 0 transparent}}
-.hero h1{font-size:clamp(2.4rem,5.6vw,4.1rem);margin:20px 0 22px;font-weight:800}
+.hero h1{font-size:clamp(2.4rem,5.6vw,4.1rem);margin:0 0 22px;font-weight:800}
 .hero h1 span{color:var(--accent2)}
 .hero p{color:var(--muted);font-size:1.12rem;max-width:560px}
 .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
@@ -204,7 +204,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 <header id="top">
   <div class="wrap nav">
     <a href="#home" class="brand">
-      <div class="brand-mark">RS</div>
+      <div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 32 32" width="24" height="24"><path d="M5 16h6l3-7 4 14 3-7h6" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <div><b>Rahul Sharma</b><small>IT Doctor · Support &amp; Systems</small></div>
     </a>
     <nav class="links" id="links">
@@ -216,9 +216,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
       <a href="#contact">Contact</a>
     </nav>
     <div class="nav-right">
-      <button class="icon-btn" id="theme" aria-label="Toggle theme">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-      </button>
       <button class="icon-btn menu-btn" id="menu" aria-label="Menu">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
       </button>
@@ -232,7 +229,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 <section class="hero" id="home">
   <div class="wrap hero-grid">
     <div class="reveal">
-      <div class="meta-line"><span class="pulse"></span> Open to work <span class="c-d">/</span> Gurugram, India · IST (UTC+5:30) <span class="c-d">/</span> M365 · Google Workspace · Networking</div>
       <h1>IT Support &amp; <span>Systems Specialist</span></h1>
       <p>I'm Rahul Sharma — the “IT Doctor”. For 5+ years I've been diagnosing and fixing what slows teams down: broken logins, flaky networks, mailbox chaos and machines that won't cooperate. Remote or on-site, I get people back to work fast.</p>
       <div class="hero-actions">
@@ -246,11 +242,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
         </a>
       </div>
     </div>
-
-    <div class="term reveal" aria-label="System health check">
-      <div class="term-top"><i></i><i></i><i></i><span>rahul@it-doctor: ~ diagnose</span></div>
-      <div class="term-body" id="term"></div>
-    </div>
   </div>
 </section>
 
@@ -259,8 +250,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   <div class="wrap about-grid">
     <div class="profile reveal">
       <div class="photo">
-        <img src="assets/profile.png" alt="Portrait of Rahul Sharma" width="400" height="400">
-        <div class="badge"><span class="pulse"></span>Available</div>
+        <img src="assets/profile.png" alt="Portrait of Rahul Sharma" width="600" height="600">
       </div>
       <div class="facts">
         <div class="fact"><small>Main skill</small><b>Troubleshooting</b></div>
@@ -271,7 +261,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     </div>
 
     <div class="about-text reveal">
-      <span class="eyebrow">About Me</span>
       <h2>Your on-call doctor for tech problems</h2>
       <p>I'm an IT Support &amp; Systems Specialist working in IT services and consulting. My job is simple to describe: when something breaks, I find out why, fix it, and make sure it doesn't come back.</p>
       <p>Day to day that means end-user support, network troubleshooting, and administering Microsoft 365 and Google Workspace — users, mailboxes, licences, permissions and security settings — mostly delivered through remote support.</p>
@@ -309,7 +298,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 <!-- PROCESS -->
 <section class="alt" id="process">
   <div class="wrap">
-    <span class="eyebrow reveal">Treatment Plan</span>
     <h2 class="reveal">How a ticket gets fixed</h2>
     <p class="lead reveal">Every issue goes through the same clear steps — so you always know what's happening and when it'll be resolved.</p>
 
@@ -332,7 +320,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 <!-- SKILLS -->
 <section id="skills">
   <div class="wrap">
-    <span class="eyebrow reveal">Skills</span>
     <h2 class="reveal">Technical Toolkit</h2>
     <p class="lead reveal">The areas I work in every day across support, systems and cloud productivity platforms.</p>
 
@@ -368,7 +355,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 <!-- HOW I WORK -->
 <section class="alt" id="remote">
   <div class="wrap">
-    <span class="eyebrow reveal">Remote Work</span>
     <h2 class="reveal">How I Work</h2>
     <p class="lead reveal">Good IT support is invisible when it works — and clear and calm when it doesn't.</p>
 
@@ -393,7 +379,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
   <div class="wrap">
     <div class="contact-box reveal">
       <div style="position:relative;z-index:1">
-        <span class="eyebrow">Contact</span>
         <h2>Got an IT problem that needs a doctor?</h2>
         <p class="lead">I'm open to IT support, systems and remote support roles, as well as consulting work. Send a short note about your team and what you need.</p>
         <div class="hero-actions">
@@ -430,11 +415,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 <script>
 (function(){
   var root=document.documentElement;
-  try{var t=localStorage.getItem('theme');if(t)root.setAttribute('data-theme',t);}catch(e){}
-  document.getElementById('theme').onclick=function(){
-    var n=root.getAttribute('data-theme')==='light'?'dark':'light';
-    root.setAttribute('data-theme',n);try{localStorage.setItem('theme',n);}catch(e){}
-  };
   var links=document.getElementById('links');
   document.getElementById('menu').onclick=function(){links.classList.toggle('open')};
   links.querySelectorAll('a').forEach(function(a){a.onclick=function(){links.classList.remove('open')}});
@@ -458,25 +438,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     });
   });
 
-  var lines=[
-    '<span class="c-p">$</span> it-doctor --diagnose office-network',
-    '<span class="c-d">› scanning endpoints, accounts, connectivity…</span>',
-    '<span class="c-ok">✔</span> Hardware &amp; OS ............ <span class="c-ok">healthy</span>',
-    '<span class="c-ok">✔</span> LAN / Wi-Fi / VPN ......... <span class="c-ok">connected</span>',
-    '<span class="c-ok">✔</span> Microsoft 365 ............. <span class="c-ok">licensed</span>',
-    '<span class="c-ok">✔</span> Google Workspace .......... <span class="c-ok">synced</span>',
-    '<span class="c-w">!</span> 1 user locked out ......... <span class="c-w">fixing</span>',
-    '<span class="c-ok">✔</span> MFA reset, access restored  <span class="c-ok">resolved</span>',
-    '',
-    '<span class="c-i">diagnosis:</span> all systems operational',
-    '<span class="c-p">$</span> <span class="cursor"></span>'
-  ];
-  var term=document.getElementById('term');
-  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
-  lines.forEach(function(h,i){
-    var d=document.createElement('div');d.className='ln';d.innerHTML=h||'&nbsp;';term.appendChild(d);
-    if(reduce)d.classList.add('on');else setTimeout(function(){d.classList.add('on')},400+i*380);
-  });
 })();
 </script>
 </body>
