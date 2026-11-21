@@ -64,19 +64,23 @@ header.scrolled{background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop
 .nav .btn{padding:9px 18px}
 
 /* hero */
-.hero{padding:150px 0 90px;position:relative;overflow:hidden}
+.hero{min-height:100vh;min-height:100svh;display:flex;align-items:center;padding:120px 0 170px;position:relative;overflow:hidden}
+#bg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.hero::after{content:"";position:absolute;inset:auto 0 0 0;height:160px;background:linear-gradient(transparent,var(--bg));pointer-events:none}
 .hero::before{content:"";position:absolute;inset:0;background:
   radial-gradient(600px 400px at 85% 20%,color-mix(in srgb,var(--accent) 18%,transparent),transparent 70%),
   linear-gradient(var(--line) 1px,transparent 1px) 0 0/48px 48px,
   linear-gradient(90deg,var(--line) 1px,transparent 1px) 0 0/48px 48px;
   opacity:.45;mask-image:linear-gradient(to bottom,#000 30%,transparent);pointer-events:none}
-.hero-grid{display:grid;grid-template-columns:1fr;max-width:760px;gap:56px;align-items:center;position:relative}
+.hero-grid{position:relative;z-index:1;text-align:center;width:100%}
+.hero-grid>div{max-width:820px;margin:0 auto}
+.hero .hero-actions{justify-content:center}
 .meta-line{font-family:var(--mono);font-size:.82rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
 .pulse{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 0 var(--accent);animation:pulse 2s infinite}
 @keyframes pulse{70%{box-shadow:0 0 0 10px transparent}100%{box-shadow:0 0 0 0 transparent}}
-.hero h1{font-size:clamp(2.4rem,5.6vw,4.1rem);margin:0 0 22px;font-weight:800}
-.hero h1 span{color:var(--accent2)}
-.hero p{color:var(--muted);font-size:1.12rem;max-width:560px}
+.hero h1{font-size:clamp(2.4rem,6.4vw,4.8rem);margin:0 0 24px;font-weight:800;letter-spacing:-.035em;text-wrap:balance}
+.hero h1 span{background:linear-gradient(90deg,var(--accent2),#86efac);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--muted);font-size:1.15rem;max-width:620px;margin:0 auto}
 .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
 
 /* terminal card */
@@ -188,7 +192,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 @media (max-width:600px){
   section{padding:72px 0}
   .wrap{padding:0 16px}
-  .hero{padding:120px 0 64px}
+  .hero{padding:110px 0 150px}
   .stack,.work,.cols{grid-template-columns:1fr}
   .steps li{grid-template-columns:1fr auto;padding:18px 20px}
   .steps .num{display:none}
@@ -226,6 +230,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 <main>
 <!-- HERO -->
 <section class="hero" id="home">
+  <canvas id="bg" aria-hidden="true"></canvas>
   <div class="wrap hero-grid">
     <div class="reveal">
       <h1>IT Support &amp; <span>Systems Specialist</span></h1>
@@ -425,6 +430,49 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     });
   });
 
+  /* hero background loop: network + ECG monitor */
+  (function(){
+    var c=document.getElementById('bg'),x=c.getContext('2d'),hero=c.parentNode;
+    var W,H,dpr,nodes=[],packets=[],t0=performance.now(),running=true;
+    var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function col(v,a){var h=getComputedStyle(document.documentElement).getPropertyValue(v).trim();var n=parseInt(h.slice(1),16);return 'rgba('+(n>>16&255)+','+(n>>8&255)+','+(n&255)+','+a+')'}
+    function size(){dpr=Math.min(devicePixelRatio||1,2);W=hero.clientWidth;H=hero.clientHeight;c.width=W*dpr;c.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0);
+      var n=Math.round(Math.min(46,W*H/26000));nodes=[];for(var i=0;i<n;i++)nodes.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.18,r:Math.random()*1.6+1});packets=[]}
+    function beat(p){ /* p in [0,1) one heartbeat; returns -1..1 */
+      function g(m,w,a){return a*Math.exp(-Math.pow((p-m)/w,2))}
+      return g(.18,.035,.12)+g(.36,.012,-.14)+g(.4,.014,1)+g(.44,.014,-.32)+g(.66,.06,.22);}
+    var ecg=[],sweep=0;
+    function frame(now){
+      if(!running)return;
+      var t=(now-t0)/1000,link=150;
+      x.clearRect(0,0,W,H);
+      var Lc=col('--accent',1);
+      /* network */
+      for(var i=0;i<nodes.length;i++){var a=nodes[i];
+        if(!reduce){a.x+=a.vx;a.y+=a.vy;if(a.x<0||a.x>W)a.vx*=-1;if(a.y<0||a.y>H)a.vy*=-1}
+        for(var j=i+1;j<nodes.length;j++){var b=nodes[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.sqrt(dx*dx+dy*dy);
+          if(d<link){x.strokeStyle=col('--accent',.16*(1-d/link));x.lineWidth=1;x.beginPath();x.moveTo(a.x,a.y);x.lineTo(b.x,b.y);x.stroke();
+            if(!reduce&&packets.length<14&&Math.random()<.0009)packets.push({a:a,b:b,p:0,s:.006+Math.random()*.01})}}
+        x.fillStyle=col('--accent',.35);x.beginPath();x.arc(a.x,a.y,a.r,0,7);x.fill()}
+      for(var k=packets.length-1;k>=0;k--){var P=packets[k];P.p+=P.s;if(P.p>=1){packets.splice(k,1);continue}
+        var px=P.a.x+(P.b.x-P.a.x)*P.p,py=P.a.y+(P.b.y-P.a.y)*P.p;
+        x.fillStyle=col('--accent2',.9);x.shadowColor=Lc;x.shadowBlur=10;x.beginPath();x.arc(px,py,2,0,7);x.fill();x.shadowBlur=0}
+      /* ECG monitor sweep */
+      var amp=Math.min(64,H*.08),cb=hero.querySelector('.hero-grid').getBoundingClientRect().bottom-hero.getBoundingClientRect().top,base=Math.min(H-30,Math.max(H*.78,cb+amp+40)),period=Math.max(260,W/3.2),speed=W/4.2; /* px per second */
+      var head=reduce?W:(t*speed)%(W+120);
+      x.lineWidth=2;x.lineJoin='round';x.lineCap='round';
+      var trail=W*.75,step=3;
+      for(var sx=Math.max(0,head-trail);sx<Math.min(head,W);sx+=step){
+        var age=(head-sx)/trail,al=reduce?.35:Math.max(0,1-age)*.75;
+        var y1=base-beat(((sx)/period)%1)*amp,y2=base-beat(((sx+step)/period)%1)*amp;
+        x.strokeStyle=col('--accent2',al);x.beginPath();x.moveTo(sx,y1);x.lineTo(sx+step,y2);x.stroke()}
+      if(!reduce&&head<W){var hy=base-beat((head/period)%1)*amp;
+        x.fillStyle=col('--accent2',1);x.shadowColor=Lc;x.shadowBlur=18;x.beginPath();x.arc(head,hy,3.5,0,7);x.fill();x.shadowBlur=0}
+      if(!reduce)requestAnimationFrame(frame)}
+    size();addEventListener('resize',function(){size();if(reduce)frame(performance.now())});
+    new IntersectionObserver(function(e){var v=e[0].isIntersecting;if(v&&!running){running=true;requestAnimationFrame(frame)}else if(!v)running=false}).observe(hero);
+    requestAnimationFrame(frame);
+  })();
 })();
 </script>
 </body>
