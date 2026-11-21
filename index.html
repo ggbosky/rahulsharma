@@ -430,33 +430,22 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
     });
   });
 
-  /* hero background loop: network + ECG monitor */
+  /* hero background loop: ECG monitor */
   (function(){
     var c=document.getElementById('bg'),x=c.getContext('2d'),hero=c.parentNode;
-    var W,H,dpr,nodes=[],packets=[],t0=performance.now(),running=true;
+    var W,H,dpr,t0=performance.now(),running=true;
     var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
     function col(v,a){var h=getComputedStyle(document.documentElement).getPropertyValue(v).trim();var n=parseInt(h.slice(1),16);return 'rgba('+(n>>16&255)+','+(n>>8&255)+','+(n&255)+','+a+')'}
     function size(){dpr=Math.min(devicePixelRatio||1,2);W=hero.clientWidth;H=hero.clientHeight;c.width=W*dpr;c.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0);
-      var n=Math.round(Math.min(46,W*H/26000));nodes=[];for(var i=0;i<n;i++)nodes.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.18,r:Math.random()*1.6+1});packets=[]}
+      }
     function beat(p){ /* p in [0,1) one heartbeat; returns -1..1 */
       function g(m,w,a){return a*Math.exp(-Math.pow((p-m)/w,2))}
       return g(.18,.035,.12)+g(.36,.012,-.14)+g(.4,.014,1)+g(.44,.014,-.32)+g(.66,.06,.22);}
-    var ecg=[],sweep=0;
     function frame(now){
       if(!running)return;
-      var t=(now-t0)/1000,link=150;
+      var t=(now-t0)/1000;
       x.clearRect(0,0,W,H);
       var Lc=col('--accent',1);
-      /* network */
-      for(var i=0;i<nodes.length;i++){var a=nodes[i];
-        if(!reduce){a.x+=a.vx;a.y+=a.vy;if(a.x<0||a.x>W)a.vx*=-1;if(a.y<0||a.y>H)a.vy*=-1}
-        for(var j=i+1;j<nodes.length;j++){var b=nodes[j],dx=a.x-b.x,dy=a.y-b.y,d=Math.sqrt(dx*dx+dy*dy);
-          if(d<link){x.strokeStyle=col('--accent',.16*(1-d/link));x.lineWidth=1;x.beginPath();x.moveTo(a.x,a.y);x.lineTo(b.x,b.y);x.stroke();
-            if(!reduce&&packets.length<14&&Math.random()<.0009)packets.push({a:a,b:b,p:0,s:.006+Math.random()*.01})}}
-        x.fillStyle=col('--accent',.35);x.beginPath();x.arc(a.x,a.y,a.r,0,7);x.fill()}
-      for(var k=packets.length-1;k>=0;k--){var P=packets[k];P.p+=P.s;if(P.p>=1){packets.splice(k,1);continue}
-        var px=P.a.x+(P.b.x-P.a.x)*P.p,py=P.a.y+(P.b.y-P.a.y)*P.p;
-        x.fillStyle=col('--accent2',.9);x.shadowColor=Lc;x.shadowBlur=10;x.beginPath();x.arc(px,py,2,0,7);x.fill();x.shadowBlur=0}
       /* ECG monitor sweep */
       var amp=Math.min(64,H*.08),cb=hero.querySelector('.hero-grid').getBoundingClientRect().bottom-hero.getBoundingClientRect().top,base=Math.min(H-30,Math.max(H*.78,cb+amp+40)),period=Math.max(260,W/3.2),speed=W/4.2; /* px per second */
       var head=reduce?W:(t*speed)%(W+120);
