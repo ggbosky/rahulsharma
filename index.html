@@ -7,7 +7,6 @@
 <meta name="description" content="Rahul Sharma — IT Doctor. IT Support & Systems Specialist with 5+ years in IT: troubleshooting, networking, Microsoft 365, Google Workspace and remote support. Based in Gurugram, India.">
 <meta property="og:title" content="Rahul Sharma · IT Support & Systems Specialist">
 <meta property="og:description" content="Troubleshooting, networking, Microsoft 365, Google Workspace and remote support. 5+ years in IT.">
-<meta property="og:image" content="assets/profile.png">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%2322c55e'/><path d='M9 16h4l2-5 3 10 2-5h3' fill='none' stroke='%23051a0d' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -94,7 +93,7 @@ header.scrolled{background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop
 @keyframes blink{50%{opacity:0}}
 
 /* about */
-.about-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:start}
+.about-grid{display:grid;grid-template-columns:1fr;max-width:820px}
 .profile{position:relative}
 .photo{aspect-ratio:1;border-radius:24px;overflow:hidden;background:var(--card2);border:1px solid var(--line);box-shadow:0 30px 60px -30px rgba(0,0,0,.7),0 0 0 6px color-mix(in srgb,var(--accent) 8%,transparent)}
 .photo img{width:100%;height:100%;object-fit:cover}
@@ -248,18 +247,6 @@ footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
 <!-- ABOUT -->
 <section id="about">
   <div class="wrap about-grid">
-    <div class="profile reveal">
-      <div class="photo">
-        <img src="assets/profile.png?v=3" alt="Portrait of Rahul Sharma" width="600" height="600">
-      </div>
-      <div class="facts">
-        <div class="fact"><small>Main skill</small><b>Troubleshooting</b></div>
-        <div class="fact"><small>Experience</small><b>5+ years in IT</b></div>
-        <div class="fact"><small>Platforms</small><b>M365 · Workspace</b></div>
-        <div class="fact"><small>Region</small><b>Gurugram · IST</b></div>
-      </div>
-    </div>
-
     <div class="about-text reveal">
       <h2>Your on-call doctor for tech problems</h2>
       <p>I'm an IT Support &amp; Systems Specialist working in IT services and consulting. My job is simple to describe: when something breaks, I find out why, fix it, and make sure it doesn't come back.</p>
